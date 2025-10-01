@@ -20,6 +20,9 @@
             pkg-config
             luarocks
             zlib
+            emscripten
+            python3
+            cmake
           ];
         };
       };
