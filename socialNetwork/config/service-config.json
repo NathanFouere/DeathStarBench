@@ -209,6 +209,12 @@
     "timeout_ms": 10000,
     "port": 6379,
     "connections": 512
+  },
+  "test-service": {
+    "keepalive_ms": 10000,
+    "addr": "test-service",
+    "timeout_ms": 10000,
+    "port": 9090,
+    "connections": 512
   }
-
 }
