@@ -61,17 +61,20 @@ function TextServiceProcessor:process(iprot, oprot, server_ctx)
   local name, mtype, seqid = iprot:readMessageBegin()
   local func_name = 'process_' .. name
   if not self[func_name] or ttype(self[func_name]) ~= 'function' then
-    iprot:skip(TType.STRUCT)
-    iprot:readMessageEnd()
-    x = TApplicationException:new{
-      errorCode = TApplicationException.UNKNOWN_METHOD
-    }
-    oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
-    x:write(oprot)
-    oprot:writeMessageEnd()
-    oprot.trans:flush()
+    if oprot ~= nil then
+      iprot:skip(TType.STRUCT)
+      iprot:readMessageEnd()
+      x = TApplicationException:new{
+        errorCode = TApplicationException.UNKNOWN_METHOD
+      }
+      oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
+      x:write(oprot)
+      oprot:writeMessageEnd()
+      oprot.trans:flush()
+    end
+    return false, 'Unknown function '..name
   else
-    self[func_name](self, seqid, iprot, oprot, server_ctx)
+    return self[func_name](self, seqid, iprot, oprot, server_ctx)
   end
 end
 
@@ -94,6 +97,7 @@ function TextServiceProcessor:process_ComposeText(seqid, iprot, oprot, server_ct
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 -- HELPER FUNCTIONS AND STRUCTURES
@@ -125,7 +129,7 @@ function ComposeText_args:read(iprot)
     elseif fid == 3 then
       if ftype == TType.MAP then
         self.carrier = {}
-        local _ktype39, _vtype40, _size38 = iprot:readMapBegin()
+        local _ktype39, _vtype40, _size38 = iprot:readMapBegin() 
         for _i=1,_size38 do
           local _key42 = iprot:readString()
           local _val43 = iprot:readString()

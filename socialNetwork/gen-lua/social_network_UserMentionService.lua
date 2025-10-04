@@ -61,17 +61,20 @@ function UserMentionServiceProcessor:process(iprot, oprot, server_ctx)
   local name, mtype, seqid = iprot:readMessageBegin()
   local func_name = 'process_' .. name
   if not self[func_name] or ttype(self[func_name]) ~= 'function' then
-    iprot:skip(TType.STRUCT)
-    iprot:readMessageEnd()
-    x = TApplicationException:new{
-      errorCode = TApplicationException.UNKNOWN_METHOD
-    }
-    oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
-    x:write(oprot)
-    oprot:writeMessageEnd()
-    oprot.trans:flush()
+    if oprot ~= nil then
+      iprot:skip(TType.STRUCT)
+      iprot:readMessageEnd()
+      x = TApplicationException:new{
+        errorCode = TApplicationException.UNKNOWN_METHOD
+      }
+      oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
+      x:write(oprot)
+      oprot:writeMessageEnd()
+      oprot.trans:flush()
+    end
+    return false, 'Unknown function '..name
   else
-    self[func_name](self, seqid, iprot, oprot, server_ctx)
+    return self[func_name](self, seqid, iprot, oprot, server_ctx)
   end
 end
 
@@ -94,6 +97,7 @@ function UserMentionServiceProcessor:process_ComposeUserMentions(seqid, iprot, o
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 -- HELPER FUNCTIONS AND STRUCTURES
@@ -119,10 +123,10 @@ function ComposeUserMentions_args:read(iprot)
     elseif fid == 2 then
       if ftype == TType.LIST then
         self.usernames = {}
-        local _etype263, _size260 = iprot:readListBegin()
-        for _i=1,_size260 do
-          local _elem264 = iprot:readString()
-          table.insert(self.usernames, _elem264)
+        local _etype271, _size268 = iprot:readListBegin()
+        for _i=1,_size268 do
+          local _elem272 = iprot:readString()
+          table.insert(self.usernames, _elem272)
         end
         iprot:readListEnd()
       else
@@ -131,11 +135,11 @@ function ComposeUserMentions_args:read(iprot)
     elseif fid == 3 then
       if ftype == TType.MAP then
         self.carrier = {}
-        local _ktype266, _vtype267, _size265 = iprot:readMapBegin()
-        for _i=1,_size265 do
-          local _key269 = iprot:readString()
-          local _val270 = iprot:readString()
-          self.carrier[_key269] = _val270
+        local _ktype274, _vtype275, _size273 = iprot:readMapBegin() 
+        for _i=1,_size273 do
+          local _key277 = iprot:readString()
+          local _val278 = iprot:readString()
+          self.carrier[_key277] = _val278
         end
         iprot:readMapEnd()
       else
@@ -159,8 +163,8 @@ function ComposeUserMentions_args:write(oprot)
   if self.usernames ~= nil then
     oprot:writeFieldBegin('usernames', TType.LIST, 2)
     oprot:writeListBegin(TType.STRING, #self.usernames)
-    for _,iter271 in ipairs(self.usernames) do
-      oprot:writeString(iter271)
+    for _,iter279 in ipairs(self.usernames) do
+      oprot:writeString(iter279)
     end
     oprot:writeListEnd()
     oprot:writeFieldEnd()
@@ -168,9 +172,9 @@ function ComposeUserMentions_args:write(oprot)
   if self.carrier ~= nil then
     oprot:writeFieldBegin('carrier', TType.MAP, 3)
     oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
-    for kiter272,viter273 in pairs(self.carrier) do
-      oprot:writeString(kiter272)
-      oprot:writeString(viter273)
+    for kiter280,viter281 in pairs(self.carrier) do
+      oprot:writeString(kiter280)
+      oprot:writeString(viter281)
     end
     oprot:writeMapEnd()
     oprot:writeFieldEnd()
@@ -193,11 +197,11 @@ function ComposeUserMentions_result:read(iprot)
     elseif fid == 0 then
       if ftype == TType.LIST then
         self.success = {}
-        local _etype277, _size274 = iprot:readListBegin()
-        for _i=1,_size274 do
-          local _elem278 = UserMention:new{}
-          _elem278:read(iprot)
-          table.insert(self.success, _elem278)
+        local _etype285, _size282 = iprot:readListBegin()
+        for _i=1,_size282 do
+          local _elem286 = UserMention:new{}
+          _elem286:read(iprot)
+          table.insert(self.success, _elem286)
         end
         iprot:readListEnd()
       else
@@ -223,8 +227,8 @@ function ComposeUserMentions_result:write(oprot)
   if self.success ~= nil then
     oprot:writeFieldBegin('success', TType.LIST, 0)
     oprot:writeListBegin(TType.STRUCT, #self.success)
-    for _,iter279 in ipairs(self.success) do
-      iter279:write(oprot)
+    for _,iter287 in ipairs(self.success) do
+      iter287:write(oprot)
     end
     oprot:writeListEnd()
     oprot:writeFieldEnd()

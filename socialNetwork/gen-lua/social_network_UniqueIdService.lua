@@ -61,17 +61,20 @@ function UniqueIdServiceProcessor:process(iprot, oprot, server_ctx)
   local name, mtype, seqid = iprot:readMessageBegin()
   local func_name = 'process_' .. name
   if not self[func_name] or ttype(self[func_name]) ~= 'function' then
-    iprot:skip(TType.STRUCT)
-    iprot:readMessageEnd()
-    x = TApplicationException:new{
-      errorCode = TApplicationException.UNKNOWN_METHOD
-    }
-    oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
-    x:write(oprot)
-    oprot:writeMessageEnd()
-    oprot.trans:flush()
+    if oprot ~= nil then
+      iprot:skip(TType.STRUCT)
+      iprot:readMessageEnd()
+      x = TApplicationException:new{
+        errorCode = TApplicationException.UNKNOWN_METHOD
+      }
+      oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
+      x:write(oprot)
+      oprot:writeMessageEnd()
+      oprot.trans:flush()
+    end
+    return false, 'Unknown function '..name
   else
-    self[func_name](self, seqid, iprot, oprot, server_ctx)
+    return self[func_name](self, seqid, iprot, oprot, server_ctx)
   end
 end
 
@@ -94,6 +97,7 @@ function UniqueIdServiceProcessor:process_ComposeUniqueId(seqid, iprot, oprot, s
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 -- HELPER FUNCTIONS AND STRUCTURES
@@ -125,7 +129,7 @@ function ComposeUniqueId_args:read(iprot)
     elseif fid == 3 then
       if ftype == TType.MAP then
         self.carrier = {}
-        local _ktype31, _vtype32, _size30 = iprot:readMapBegin()
+        local _ktype31, _vtype32, _size30 = iprot:readMapBegin() 
         for _i=1,_size30 do
           local _key34 = iprot:readString()
           local _val35 = iprot:readString()

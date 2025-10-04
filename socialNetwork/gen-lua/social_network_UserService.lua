@@ -6,822 +6,10 @@
 --
 
 
-local Thrift = require 'Thrift'
-local TType = Thrift.TType
-local TMessageType = Thrift.TMessageType
-local __TObject = Thrift.__TObject
-local TApplicationException = Thrift.TApplicationException
-local __TClient = Thrift.__TClient
-local __TProcessor = Thrift.__TProcessor
-local ttype = Thrift.ttype
-local ttable_size = Thrift.ttable_size
-local social_network_ttypes = require 'social_network_ttypes'
-local ServiceException = social_network_ttypes.ServiceException
-local Creator = social_network_ttypes.Creator
+require 'Thrift'
+require 'social_network_ttypes'
 
--- HELPER FUNCTIONS AND STRUCTURES
-
-local RegisterUser_args = __TObject:new{
-  req_id,
-  first_name,
-  last_name,
-  username,
-  password,
-  carrier
-}
-
-function RegisterUser_args:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.I64 then
-        self.req_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 2 then
-      if ftype == TType.STRING then
-        self.first_name = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 3 then
-      if ftype == TType.STRING then
-        self.last_name = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 4 then
-      if ftype == TType.STRING then
-        self.username = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 5 then
-      if ftype == TType.STRING then
-        self.password = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 6 then
-      if ftype == TType.MAP then
-        self.carrier = {}
-        local _ktype47, _vtype48, _size46 = iprot:readMapBegin()
-        for _i=1,_size46 do
-          local _key50 = iprot:readString()
-          local _val51 = iprot:readString()
-          self.carrier[_key50] = _val51
-        end
-        iprot:readMapEnd()
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function RegisterUser_args:write(oprot)
-  oprot:writeStructBegin('RegisterUser_args')
-  if self.req_id ~= nil then
-    oprot:writeFieldBegin('req_id', TType.I64, 1)
-    oprot:writeI64(self.req_id)
-    oprot:writeFieldEnd()
-  end
-  if self.first_name ~= nil then
-    oprot:writeFieldBegin('first_name', TType.STRING, 2)
-    oprot:writeString(self.first_name)
-    oprot:writeFieldEnd()
-  end
-  if self.last_name ~= nil then
-    oprot:writeFieldBegin('last_name', TType.STRING, 3)
-    oprot:writeString(self.last_name)
-    oprot:writeFieldEnd()
-  end
-  if self.username ~= nil then
-    oprot:writeFieldBegin('username', TType.STRING, 4)
-    oprot:writeString(self.username)
-    oprot:writeFieldEnd()
-  end
-  if self.password ~= nil then
-    oprot:writeFieldBegin('password', TType.STRING, 5)
-    oprot:writeString(self.password)
-    oprot:writeFieldEnd()
-  end
-  if self.carrier ~= nil then
-    oprot:writeFieldBegin('carrier', TType.MAP, 6)
-    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
-    for kiter52,viter53 in pairs(self.carrier) do
-      oprot:writeString(kiter52)
-      oprot:writeString(viter53)
-    end
-    oprot:writeMapEnd()
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local RegisterUser_result = __TObject:new{
-  se
-}
-
-function RegisterUser_result:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.STRUCT then
-        self.se = ServiceException:new{}
-        self.se:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function RegisterUser_result:write(oprot)
-  oprot:writeStructBegin('RegisterUser_result')
-  if self.se ~= nil then
-    oprot:writeFieldBegin('se', TType.STRUCT, 1)
-    self.se:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local RegisterUserWithId_args = __TObject:new{
-  req_id,
-  first_name,
-  last_name,
-  username,
-  password,
-  user_id,
-  carrier
-}
-
-function RegisterUserWithId_args:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.I64 then
-        self.req_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 2 then
-      if ftype == TType.STRING then
-        self.first_name = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 3 then
-      if ftype == TType.STRING then
-        self.last_name = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 4 then
-      if ftype == TType.STRING then
-        self.username = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 5 then
-      if ftype == TType.STRING then
-        self.password = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 6 then
-      if ftype == TType.I64 then
-        self.user_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 7 then
-      if ftype == TType.MAP then
-        self.carrier = {}
-        local _ktype55, _vtype56, _size54 = iprot:readMapBegin()
-        for _i=1,_size54 do
-          local _key58 = iprot:readString()
-          local _val59 = iprot:readString()
-          self.carrier[_key58] = _val59
-        end
-        iprot:readMapEnd()
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function RegisterUserWithId_args:write(oprot)
-  oprot:writeStructBegin('RegisterUserWithId_args')
-  if self.req_id ~= nil then
-    oprot:writeFieldBegin('req_id', TType.I64, 1)
-    oprot:writeI64(self.req_id)
-    oprot:writeFieldEnd()
-  end
-  if self.first_name ~= nil then
-    oprot:writeFieldBegin('first_name', TType.STRING, 2)
-    oprot:writeString(self.first_name)
-    oprot:writeFieldEnd()
-  end
-  if self.last_name ~= nil then
-    oprot:writeFieldBegin('last_name', TType.STRING, 3)
-    oprot:writeString(self.last_name)
-    oprot:writeFieldEnd()
-  end
-  if self.username ~= nil then
-    oprot:writeFieldBegin('username', TType.STRING, 4)
-    oprot:writeString(self.username)
-    oprot:writeFieldEnd()
-  end
-  if self.password ~= nil then
-    oprot:writeFieldBegin('password', TType.STRING, 5)
-    oprot:writeString(self.password)
-    oprot:writeFieldEnd()
-  end
-  if self.user_id ~= nil then
-    oprot:writeFieldBegin('user_id', TType.I64, 6)
-    oprot:writeI64(self.user_id)
-    oprot:writeFieldEnd()
-  end
-  if self.carrier ~= nil then
-    oprot:writeFieldBegin('carrier', TType.MAP, 7)
-    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
-    for kiter60,viter61 in pairs(self.carrier) do
-      oprot:writeString(kiter60)
-      oprot:writeString(viter61)
-    end
-    oprot:writeMapEnd()
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local RegisterUserWithId_result = __TObject:new{
-  se
-}
-
-function RegisterUserWithId_result:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.STRUCT then
-        self.se = ServiceException:new{}
-        self.se:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function RegisterUserWithId_result:write(oprot)
-  oprot:writeStructBegin('RegisterUserWithId_result')
-  if self.se ~= nil then
-    oprot:writeFieldBegin('se', TType.STRUCT, 1)
-    self.se:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local Login_args = __TObject:new{
-  req_id,
-  username,
-  password,
-  carrier
-}
-
-function Login_args:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.I64 then
-        self.req_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 2 then
-      if ftype == TType.STRING then
-        self.username = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 3 then
-      if ftype == TType.STRING then
-        self.password = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 4 then
-      if ftype == TType.MAP then
-        self.carrier = {}
-        local _ktype63, _vtype64, _size62 = iprot:readMapBegin()
-        for _i=1,_size62 do
-          local _key66 = iprot:readString()
-          local _val67 = iprot:readString()
-          self.carrier[_key66] = _val67
-        end
-        iprot:readMapEnd()
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function Login_args:write(oprot)
-  oprot:writeStructBegin('Login_args')
-  if self.req_id ~= nil then
-    oprot:writeFieldBegin('req_id', TType.I64, 1)
-    oprot:writeI64(self.req_id)
-    oprot:writeFieldEnd()
-  end
-  if self.username ~= nil then
-    oprot:writeFieldBegin('username', TType.STRING, 2)
-    oprot:writeString(self.username)
-    oprot:writeFieldEnd()
-  end
-  if self.password ~= nil then
-    oprot:writeFieldBegin('password', TType.STRING, 3)
-    oprot:writeString(self.password)
-    oprot:writeFieldEnd()
-  end
-  if self.carrier ~= nil then
-    oprot:writeFieldBegin('carrier', TType.MAP, 4)
-    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
-    for kiter68,viter69 in pairs(self.carrier) do
-      oprot:writeString(kiter68)
-      oprot:writeString(viter69)
-    end
-    oprot:writeMapEnd()
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local Login_result = __TObject:new{
-  success,
-  se
-}
-
-function Login_result:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 0 then
-      if ftype == TType.STRING then
-        self.success = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 1 then
-      if ftype == TType.STRUCT then
-        self.se = ServiceException:new{}
-        self.se:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function Login_result:write(oprot)
-  oprot:writeStructBegin('Login_result')
-  if self.success ~= nil then
-    oprot:writeFieldBegin('success', TType.STRING, 0)
-    oprot:writeString(self.success)
-    oprot:writeFieldEnd()
-  end
-  if self.se ~= nil then
-    oprot:writeFieldBegin('se', TType.STRUCT, 1)
-    self.se:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local ComposeCreatorWithUserId_args = __TObject:new{
-  req_id,
-  user_id,
-  username,
-  carrier
-}
-
-function ComposeCreatorWithUserId_args:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.I64 then
-        self.req_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 2 then
-      if ftype == TType.I64 then
-        self.user_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 3 then
-      if ftype == TType.STRING then
-        self.username = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 4 then
-      if ftype == TType.MAP then
-        self.carrier = {}
-        local _ktype71, _vtype72, _size70 = iprot:readMapBegin()
-        for _i=1,_size70 do
-          local _key74 = iprot:readString()
-          local _val75 = iprot:readString()
-          self.carrier[_key74] = _val75
-        end
-        iprot:readMapEnd()
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function ComposeCreatorWithUserId_args:write(oprot)
-  oprot:writeStructBegin('ComposeCreatorWithUserId_args')
-  if self.req_id ~= nil then
-    oprot:writeFieldBegin('req_id', TType.I64, 1)
-    oprot:writeI64(self.req_id)
-    oprot:writeFieldEnd()
-  end
-  if self.user_id ~= nil then
-    oprot:writeFieldBegin('user_id', TType.I64, 2)
-    oprot:writeI64(self.user_id)
-    oprot:writeFieldEnd()
-  end
-  if self.username ~= nil then
-    oprot:writeFieldBegin('username', TType.STRING, 3)
-    oprot:writeString(self.username)
-    oprot:writeFieldEnd()
-  end
-  if self.carrier ~= nil then
-    oprot:writeFieldBegin('carrier', TType.MAP, 4)
-    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
-    for kiter76,viter77 in pairs(self.carrier) do
-      oprot:writeString(kiter76)
-      oprot:writeString(viter77)
-    end
-    oprot:writeMapEnd()
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local ComposeCreatorWithUserId_result = __TObject:new{
-  success,
-  se
-}
-
-function ComposeCreatorWithUserId_result:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 0 then
-      if ftype == TType.STRUCT then
-        self.success = Creator:new{}
-        self.success:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 1 then
-      if ftype == TType.STRUCT then
-        self.se = ServiceException:new{}
-        self.se:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function ComposeCreatorWithUserId_result:write(oprot)
-  oprot:writeStructBegin('ComposeCreatorWithUserId_result')
-  if self.success ~= nil then
-    oprot:writeFieldBegin('success', TType.STRUCT, 0)
-    self.success:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  if self.se ~= nil then
-    oprot:writeFieldBegin('se', TType.STRUCT, 1)
-    self.se:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local ComposeCreatorWithUsername_args = __TObject:new{
-  req_id,
-  username,
-  carrier
-}
-
-function ComposeCreatorWithUsername_args:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.I64 then
-        self.req_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 2 then
-      if ftype == TType.STRING then
-        self.username = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 3 then
-      if ftype == TType.MAP then
-        self.carrier = {}
-        local _ktype79, _vtype80, _size78 = iprot:readMapBegin()
-        for _i=1,_size78 do
-          local _key82 = iprot:readString()
-          local _val83 = iprot:readString()
-          self.carrier[_key82] = _val83
-        end
-        iprot:readMapEnd()
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function ComposeCreatorWithUsername_args:write(oprot)
-  oprot:writeStructBegin('ComposeCreatorWithUsername_args')
-  if self.req_id ~= nil then
-    oprot:writeFieldBegin('req_id', TType.I64, 1)
-    oprot:writeI64(self.req_id)
-    oprot:writeFieldEnd()
-  end
-  if self.username ~= nil then
-    oprot:writeFieldBegin('username', TType.STRING, 2)
-    oprot:writeString(self.username)
-    oprot:writeFieldEnd()
-  end
-  if self.carrier ~= nil then
-    oprot:writeFieldBegin('carrier', TType.MAP, 3)
-    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
-    for kiter84,viter85 in pairs(self.carrier) do
-      oprot:writeString(kiter84)
-      oprot:writeString(viter85)
-    end
-    oprot:writeMapEnd()
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local ComposeCreatorWithUsername_result = __TObject:new{
-  success,
-  se
-}
-
-function ComposeCreatorWithUsername_result:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 0 then
-      if ftype == TType.STRUCT then
-        self.success = Creator:new{}
-        self.success:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 1 then
-      if ftype == TType.STRUCT then
-        self.se = ServiceException:new{}
-        self.se:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function ComposeCreatorWithUsername_result:write(oprot)
-  oprot:writeStructBegin('ComposeCreatorWithUsername_result')
-  if self.success ~= nil then
-    oprot:writeFieldBegin('success', TType.STRUCT, 0)
-    self.success:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  if self.se ~= nil then
-    oprot:writeFieldBegin('se', TType.STRUCT, 1)
-    self.se:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local GetUserId_args = __TObject:new{
-  req_id,
-  username,
-  carrier
-}
-
-function GetUserId_args:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 1 then
-      if ftype == TType.I64 then
-        self.req_id = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 2 then
-      if ftype == TType.STRING then
-        self.username = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 3 then
-      if ftype == TType.MAP then
-        self.carrier = {}
-        local _ktype87, _vtype88, _size86 = iprot:readMapBegin()
-        for _i=1,_size86 do
-          local _key90 = iprot:readString()
-          local _val91 = iprot:readString()
-          self.carrier[_key90] = _val91
-        end
-        iprot:readMapEnd()
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function GetUserId_args:write(oprot)
-  oprot:writeStructBegin('GetUserId_args')
-  if self.req_id ~= nil then
-    oprot:writeFieldBegin('req_id', TType.I64, 1)
-    oprot:writeI64(self.req_id)
-    oprot:writeFieldEnd()
-  end
-  if self.username ~= nil then
-    oprot:writeFieldBegin('username', TType.STRING, 2)
-    oprot:writeString(self.username)
-    oprot:writeFieldEnd()
-  end
-  if self.carrier ~= nil then
-    oprot:writeFieldBegin('carrier', TType.MAP, 3)
-    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
-    for kiter92,viter93 in pairs(self.carrier) do
-      oprot:writeString(kiter92)
-      oprot:writeString(viter93)
-    end
-    oprot:writeMapEnd()
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local GetUserId_result = __TObject:new{
-  success,
-  se
-}
-
-function GetUserId_result:read(iprot)
-  iprot:readStructBegin()
-  while true do
-    local fname, ftype, fid = iprot:readFieldBegin()
-    if ftype == TType.STOP then
-      break
-    elseif fid == 0 then
-      if ftype == TType.I64 then
-        self.success = iprot:readI64()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 1 then
-      if ftype == TType.STRUCT then
-        self.se = ServiceException:new{}
-        self.se:read(iprot)
-      else
-        iprot:skip(ftype)
-      end
-    else
-      iprot:skip(ftype)
-    end
-    iprot:readFieldEnd()
-  end
-  iprot:readStructEnd()
-end
-
-function GetUserId_result:write(oprot)
-  oprot:writeStructBegin('GetUserId_result')
-  if self.success ~= nil then
-    oprot:writeFieldBegin('success', TType.I64, 0)
-    oprot:writeI64(self.success)
-    oprot:writeFieldEnd()
-  end
-  if self.se ~= nil then
-    oprot:writeFieldBegin('se', TType.STRUCT, 1)
-    self.se:write(oprot)
-    oprot:writeFieldEnd()
-  end
-  oprot:writeFieldStop()
-  oprot:writeStructEnd()
-end
-
-local UserServiceClient = __TObject.new(__TClient, {
+UserServiceClient = __TObject.new(__TClient, {
   __type = 'UserServiceClient'
 })
 
@@ -1031,12 +219,12 @@ function UserServiceClient:recv_GetUserId(req_id, username, carrier)
   end
   error(TApplicationException:new{errorCode = TApplicationException.MISSING_RESULT})
 end
-local UserServiceIface = __TObject:new{
+UserServiceIface = __TObject:new{
   __type = 'UserServiceIface'
 }
 
 
-local UserServiceProcessor = __TObject.new(__TProcessor
+UserServiceProcessor = __TObject.new(__TProcessor
 , {
  __type = 'UserServiceProcessor'
 })
@@ -1045,17 +233,20 @@ function UserServiceProcessor:process(iprot, oprot, server_ctx)
   local name, mtype, seqid = iprot:readMessageBegin()
   local func_name = 'process_' .. name
   if not self[func_name] or ttype(self[func_name]) ~= 'function' then
-    iprot:skip(TType.STRUCT)
-    iprot:readMessageEnd()
-    x = TApplicationException:new{
-      errorCode = TApplicationException.UNKNOWN_METHOD
-    }
-    oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
-    x:write(oprot)
-    oprot:writeMessageEnd()
-    oprot.trans:flush()
+    if oprot ~= nil then
+      iprot:skip(TType.STRUCT)
+      iprot:readMessageEnd()
+      x = TApplicationException:new{
+        errorCode = TApplicationException.UNKNOWN_METHOD
+      }
+      oprot:writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
+      x:write(oprot)
+      oprot:writeMessageEnd()
+      oprot.trans:flush()
+    end
+    return false, 'Unknown function '..name
   else
-    self[func_name](self, seqid, iprot, oprot, server_ctx)
+    return self[func_name](self, seqid, iprot, oprot, server_ctx)
   end
 end
 
@@ -1078,6 +269,7 @@ function UserServiceProcessor:process_RegisterUser(seqid, iprot, oprot, server_c
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 function UserServiceProcessor:process_RegisterUserWithId(seqid, iprot, oprot, server_ctx)
@@ -1099,6 +291,7 @@ function UserServiceProcessor:process_RegisterUserWithId(seqid, iprot, oprot, se
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 function UserServiceProcessor:process_Login(seqid, iprot, oprot, server_ctx)
@@ -1120,6 +313,7 @@ function UserServiceProcessor:process_Login(seqid, iprot, oprot, server_ctx)
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 function UserServiceProcessor:process_ComposeCreatorWithUserId(seqid, iprot, oprot, server_ctx)
@@ -1141,6 +335,7 @@ function UserServiceProcessor:process_ComposeCreatorWithUserId(seqid, iprot, opr
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 function UserServiceProcessor:process_ComposeCreatorWithUsername(seqid, iprot, oprot, server_ctx)
@@ -1162,6 +357,7 @@ function UserServiceProcessor:process_ComposeCreatorWithUsername(seqid, iprot, o
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
 function UserServiceProcessor:process_GetUserId(seqid, iprot, oprot, server_ctx)
@@ -1183,8 +379,807 @@ function UserServiceProcessor:process_GetUserId(seqid, iprot, oprot, server_ctx)
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
+  return status, res
 end
 
-return {
-  UserServiceClient=UserServiceClient
+-- HELPER FUNCTIONS AND STRUCTURES
+
+RegisterUser_args = __TObject:new{
+  req_id,
+  first_name,
+  last_name,
+  username,
+  password,
+  carrier
 }
+
+function RegisterUser_args:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.I64 then
+        self.req_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 2 then
+      if ftype == TType.STRING then
+        self.first_name = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 3 then
+      if ftype == TType.STRING then
+        self.last_name = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 4 then
+      if ftype == TType.STRING then
+        self.username = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 5 then
+      if ftype == TType.STRING then
+        self.password = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 6 then
+      if ftype == TType.MAP then
+        self.carrier = {}
+        local _ktype47, _vtype48, _size46 = iprot:readMapBegin() 
+        for _i=1,_size46 do
+          local _key50 = iprot:readString()
+          local _val51 = iprot:readString()
+          self.carrier[_key50] = _val51
+        end
+        iprot:readMapEnd()
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function RegisterUser_args:write(oprot)
+  oprot:writeStructBegin('RegisterUser_args')
+  if self.req_id ~= nil then
+    oprot:writeFieldBegin('req_id', TType.I64, 1)
+    oprot:writeI64(self.req_id)
+    oprot:writeFieldEnd()
+  end
+  if self.first_name ~= nil then
+    oprot:writeFieldBegin('first_name', TType.STRING, 2)
+    oprot:writeString(self.first_name)
+    oprot:writeFieldEnd()
+  end
+  if self.last_name ~= nil then
+    oprot:writeFieldBegin('last_name', TType.STRING, 3)
+    oprot:writeString(self.last_name)
+    oprot:writeFieldEnd()
+  end
+  if self.username ~= nil then
+    oprot:writeFieldBegin('username', TType.STRING, 4)
+    oprot:writeString(self.username)
+    oprot:writeFieldEnd()
+  end
+  if self.password ~= nil then
+    oprot:writeFieldBegin('password', TType.STRING, 5)
+    oprot:writeString(self.password)
+    oprot:writeFieldEnd()
+  end
+  if self.carrier ~= nil then
+    oprot:writeFieldBegin('carrier', TType.MAP, 6)
+    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
+    for kiter52,viter53 in pairs(self.carrier) do
+      oprot:writeString(kiter52)
+      oprot:writeString(viter53)
+    end
+    oprot:writeMapEnd()
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+RegisterUser_result = __TObject:new{
+  se
+}
+
+function RegisterUser_result:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.STRUCT then
+        self.se = ServiceException:new{}
+        self.se:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function RegisterUser_result:write(oprot)
+  oprot:writeStructBegin('RegisterUser_result')
+  if self.se ~= nil then
+    oprot:writeFieldBegin('se', TType.STRUCT, 1)
+    self.se:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+RegisterUserWithId_args = __TObject:new{
+  req_id,
+  first_name,
+  last_name,
+  username,
+  password,
+  user_id,
+  carrier
+}
+
+function RegisterUserWithId_args:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.I64 then
+        self.req_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 2 then
+      if ftype == TType.STRING then
+        self.first_name = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 3 then
+      if ftype == TType.STRING then
+        self.last_name = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 4 then
+      if ftype == TType.STRING then
+        self.username = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 5 then
+      if ftype == TType.STRING then
+        self.password = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 6 then
+      if ftype == TType.I64 then
+        self.user_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 7 then
+      if ftype == TType.MAP then
+        self.carrier = {}
+        local _ktype55, _vtype56, _size54 = iprot:readMapBegin() 
+        for _i=1,_size54 do
+          local _key58 = iprot:readString()
+          local _val59 = iprot:readString()
+          self.carrier[_key58] = _val59
+        end
+        iprot:readMapEnd()
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function RegisterUserWithId_args:write(oprot)
+  oprot:writeStructBegin('RegisterUserWithId_args')
+  if self.req_id ~= nil then
+    oprot:writeFieldBegin('req_id', TType.I64, 1)
+    oprot:writeI64(self.req_id)
+    oprot:writeFieldEnd()
+  end
+  if self.first_name ~= nil then
+    oprot:writeFieldBegin('first_name', TType.STRING, 2)
+    oprot:writeString(self.first_name)
+    oprot:writeFieldEnd()
+  end
+  if self.last_name ~= nil then
+    oprot:writeFieldBegin('last_name', TType.STRING, 3)
+    oprot:writeString(self.last_name)
+    oprot:writeFieldEnd()
+  end
+  if self.username ~= nil then
+    oprot:writeFieldBegin('username', TType.STRING, 4)
+    oprot:writeString(self.username)
+    oprot:writeFieldEnd()
+  end
+  if self.password ~= nil then
+    oprot:writeFieldBegin('password', TType.STRING, 5)
+    oprot:writeString(self.password)
+    oprot:writeFieldEnd()
+  end
+  if self.user_id ~= nil then
+    oprot:writeFieldBegin('user_id', TType.I64, 6)
+    oprot:writeI64(self.user_id)
+    oprot:writeFieldEnd()
+  end
+  if self.carrier ~= nil then
+    oprot:writeFieldBegin('carrier', TType.MAP, 7)
+    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
+    for kiter60,viter61 in pairs(self.carrier) do
+      oprot:writeString(kiter60)
+      oprot:writeString(viter61)
+    end
+    oprot:writeMapEnd()
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+RegisterUserWithId_result = __TObject:new{
+  se
+}
+
+function RegisterUserWithId_result:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.STRUCT then
+        self.se = ServiceException:new{}
+        self.se:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function RegisterUserWithId_result:write(oprot)
+  oprot:writeStructBegin('RegisterUserWithId_result')
+  if self.se ~= nil then
+    oprot:writeFieldBegin('se', TType.STRUCT, 1)
+    self.se:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+Login_args = __TObject:new{
+  req_id,
+  username,
+  password,
+  carrier
+}
+
+function Login_args:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.I64 then
+        self.req_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 2 then
+      if ftype == TType.STRING then
+        self.username = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 3 then
+      if ftype == TType.STRING then
+        self.password = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 4 then
+      if ftype == TType.MAP then
+        self.carrier = {}
+        local _ktype63, _vtype64, _size62 = iprot:readMapBegin() 
+        for _i=1,_size62 do
+          local _key66 = iprot:readString()
+          local _val67 = iprot:readString()
+          self.carrier[_key66] = _val67
+        end
+        iprot:readMapEnd()
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function Login_args:write(oprot)
+  oprot:writeStructBegin('Login_args')
+  if self.req_id ~= nil then
+    oprot:writeFieldBegin('req_id', TType.I64, 1)
+    oprot:writeI64(self.req_id)
+    oprot:writeFieldEnd()
+  end
+  if self.username ~= nil then
+    oprot:writeFieldBegin('username', TType.STRING, 2)
+    oprot:writeString(self.username)
+    oprot:writeFieldEnd()
+  end
+  if self.password ~= nil then
+    oprot:writeFieldBegin('password', TType.STRING, 3)
+    oprot:writeString(self.password)
+    oprot:writeFieldEnd()
+  end
+  if self.carrier ~= nil then
+    oprot:writeFieldBegin('carrier', TType.MAP, 4)
+    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
+    for kiter68,viter69 in pairs(self.carrier) do
+      oprot:writeString(kiter68)
+      oprot:writeString(viter69)
+    end
+    oprot:writeMapEnd()
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+Login_result = __TObject:new{
+  success,
+  se
+}
+
+function Login_result:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 0 then
+      if ftype == TType.STRING then
+        self.success = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 1 then
+      if ftype == TType.STRUCT then
+        self.se = ServiceException:new{}
+        self.se:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function Login_result:write(oprot)
+  oprot:writeStructBegin('Login_result')
+  if self.success ~= nil then
+    oprot:writeFieldBegin('success', TType.STRING, 0)
+    oprot:writeString(self.success)
+    oprot:writeFieldEnd()
+  end
+  if self.se ~= nil then
+    oprot:writeFieldBegin('se', TType.STRUCT, 1)
+    self.se:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+ComposeCreatorWithUserId_args = __TObject:new{
+  req_id,
+  user_id,
+  username,
+  carrier
+}
+
+function ComposeCreatorWithUserId_args:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.I64 then
+        self.req_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 2 then
+      if ftype == TType.I64 then
+        self.user_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 3 then
+      if ftype == TType.STRING then
+        self.username = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 4 then
+      if ftype == TType.MAP then
+        self.carrier = {}
+        local _ktype71, _vtype72, _size70 = iprot:readMapBegin() 
+        for _i=1,_size70 do
+          local _key74 = iprot:readString()
+          local _val75 = iprot:readString()
+          self.carrier[_key74] = _val75
+        end
+        iprot:readMapEnd()
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function ComposeCreatorWithUserId_args:write(oprot)
+  oprot:writeStructBegin('ComposeCreatorWithUserId_args')
+  if self.req_id ~= nil then
+    oprot:writeFieldBegin('req_id', TType.I64, 1)
+    oprot:writeI64(self.req_id)
+    oprot:writeFieldEnd()
+  end
+  if self.user_id ~= nil then
+    oprot:writeFieldBegin('user_id', TType.I64, 2)
+    oprot:writeI64(self.user_id)
+    oprot:writeFieldEnd()
+  end
+  if self.username ~= nil then
+    oprot:writeFieldBegin('username', TType.STRING, 3)
+    oprot:writeString(self.username)
+    oprot:writeFieldEnd()
+  end
+  if self.carrier ~= nil then
+    oprot:writeFieldBegin('carrier', TType.MAP, 4)
+    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
+    for kiter76,viter77 in pairs(self.carrier) do
+      oprot:writeString(kiter76)
+      oprot:writeString(viter77)
+    end
+    oprot:writeMapEnd()
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+ComposeCreatorWithUserId_result = __TObject:new{
+  success,
+  se
+}
+
+function ComposeCreatorWithUserId_result:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 0 then
+      if ftype == TType.STRUCT then
+        self.success = Creator:new{}
+        self.success:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 1 then
+      if ftype == TType.STRUCT then
+        self.se = ServiceException:new{}
+        self.se:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function ComposeCreatorWithUserId_result:write(oprot)
+  oprot:writeStructBegin('ComposeCreatorWithUserId_result')
+  if self.success ~= nil then
+    oprot:writeFieldBegin('success', TType.STRUCT, 0)
+    self.success:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  if self.se ~= nil then
+    oprot:writeFieldBegin('se', TType.STRUCT, 1)
+    self.se:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+ComposeCreatorWithUsername_args = __TObject:new{
+  req_id,
+  username,
+  carrier
+}
+
+function ComposeCreatorWithUsername_args:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.I64 then
+        self.req_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 2 then
+      if ftype == TType.STRING then
+        self.username = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 3 then
+      if ftype == TType.MAP then
+        self.carrier = {}
+        local _ktype79, _vtype80, _size78 = iprot:readMapBegin() 
+        for _i=1,_size78 do
+          local _key82 = iprot:readString()
+          local _val83 = iprot:readString()
+          self.carrier[_key82] = _val83
+        end
+        iprot:readMapEnd()
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function ComposeCreatorWithUsername_args:write(oprot)
+  oprot:writeStructBegin('ComposeCreatorWithUsername_args')
+  if self.req_id ~= nil then
+    oprot:writeFieldBegin('req_id', TType.I64, 1)
+    oprot:writeI64(self.req_id)
+    oprot:writeFieldEnd()
+  end
+  if self.username ~= nil then
+    oprot:writeFieldBegin('username', TType.STRING, 2)
+    oprot:writeString(self.username)
+    oprot:writeFieldEnd()
+  end
+  if self.carrier ~= nil then
+    oprot:writeFieldBegin('carrier', TType.MAP, 3)
+    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
+    for kiter84,viter85 in pairs(self.carrier) do
+      oprot:writeString(kiter84)
+      oprot:writeString(viter85)
+    end
+    oprot:writeMapEnd()
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+ComposeCreatorWithUsername_result = __TObject:new{
+  success,
+  se
+}
+
+function ComposeCreatorWithUsername_result:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 0 then
+      if ftype == TType.STRUCT then
+        self.success = Creator:new{}
+        self.success:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 1 then
+      if ftype == TType.STRUCT then
+        self.se = ServiceException:new{}
+        self.se:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function ComposeCreatorWithUsername_result:write(oprot)
+  oprot:writeStructBegin('ComposeCreatorWithUsername_result')
+  if self.success ~= nil then
+    oprot:writeFieldBegin('success', TType.STRUCT, 0)
+    self.success:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  if self.se ~= nil then
+    oprot:writeFieldBegin('se', TType.STRUCT, 1)
+    self.se:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+GetUserId_args = __TObject:new{
+  req_id,
+  username,
+  carrier
+}
+
+function GetUserId_args:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 1 then
+      if ftype == TType.I64 then
+        self.req_id = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 2 then
+      if ftype == TType.STRING then
+        self.username = iprot:readString()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 3 then
+      if ftype == TType.MAP then
+        self.carrier = {}
+        local _ktype87, _vtype88, _size86 = iprot:readMapBegin() 
+        for _i=1,_size86 do
+          local _key90 = iprot:readString()
+          local _val91 = iprot:readString()
+          self.carrier[_key90] = _val91
+        end
+        iprot:readMapEnd()
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function GetUserId_args:write(oprot)
+  oprot:writeStructBegin('GetUserId_args')
+  if self.req_id ~= nil then
+    oprot:writeFieldBegin('req_id', TType.I64, 1)
+    oprot:writeI64(self.req_id)
+    oprot:writeFieldEnd()
+  end
+  if self.username ~= nil then
+    oprot:writeFieldBegin('username', TType.STRING, 2)
+    oprot:writeString(self.username)
+    oprot:writeFieldEnd()
+  end
+  if self.carrier ~= nil then
+    oprot:writeFieldBegin('carrier', TType.MAP, 3)
+    oprot:writeMapBegin(TType.STRING, TType.STRING, ttable_size(self.carrier))
+    for kiter92,viter93 in pairs(self.carrier) do
+      oprot:writeString(kiter92)
+      oprot:writeString(viter93)
+    end
+    oprot:writeMapEnd()
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end
+
+GetUserId_result = __TObject:new{
+  success,
+  se
+}
+
+function GetUserId_result:read(iprot)
+  iprot:readStructBegin()
+  while true do
+    local fname, ftype, fid = iprot:readFieldBegin()
+    if ftype == TType.STOP then
+      break
+    elseif fid == 0 then
+      if ftype == TType.I64 then
+        self.success = iprot:readI64()
+      else
+        iprot:skip(ftype)
+      end
+    elseif fid == 1 then
+      if ftype == TType.STRUCT then
+        self.se = ServiceException:new{}
+        self.se:read(iprot)
+      else
+        iprot:skip(ftype)
+      end
+    else
+      iprot:skip(ftype)
+    end
+    iprot:readFieldEnd()
+  end
+  iprot:readStructEnd()
+end
+
+function GetUserId_result:write(oprot)
+  oprot:writeStructBegin('GetUserId_result')
+  if self.success ~= nil then
+    oprot:writeFieldBegin('success', TType.I64, 0)
+    oprot:writeI64(self.success)
+    oprot:writeFieldEnd()
+  end
+  if self.se ~= nil then
+    oprot:writeFieldBegin('se', TType.STRUCT, 1)
+    self.se:write(oprot)
+    oprot:writeFieldEnd()
+  end
+  oprot:writeFieldStop()
+  oprot:writeStructEnd()
+end

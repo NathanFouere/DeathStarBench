@@ -10,7 +10,23 @@ function _M.PingTestService()
     local GenericObjectPool = require "GenericObjectPool"
     local TestServiceClient = require "social_network_TestService".TestServiceClient
     local client = GenericObjectPool:connection(
-      SocialGraphServiceClient, "social-graph-service" .. k8s_suffix, 9090)
+      TestServiceClient, "test-service" .. k8s_suffix, 9090)
+    
+    local status
+    local err
+    status, err = pcall(client.TestFunction, client)
+    
+    if not status then
+      ngx.status = ngx.HTTP_INTERNAL_SERVER_ERROR
+      ngx.say("Test function Failed: " .. err.message)
+      ngx.log(ngx.ERR, "Follow Failed: " .. err.message)
+      ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
+    end
+    
+    GenericObjectPool:returnConnection(client)
+    ngx.exit(ngx.HTTP_OK)
+
+
 end 
 
 return _M
