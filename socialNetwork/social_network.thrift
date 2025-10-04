@@ -283,3 +283,7 @@ service MediaService {
       4: map<string, string> carrier
   ) throws (1: ServiceException se)
 }
+
+service TestService {
+    string TestFunction()
+}

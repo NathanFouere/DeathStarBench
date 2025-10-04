@@ -7,16 +7,21 @@ RUN cd /tmp/redis-plus-plus\
 && sed -i '/Transaction transaction/i\\    ShardsPool* get_shards_pool(){\n        return &_pool;\n    }\n' \
    src/sw/redis++/redis_cluster.h \
 && cmake -DREDIS_PLUS_PLUS_USE_TLS=ON . \
-&& make -j$(nproc) \
+&& make -j4 \ 
 && make install
+
+## TODO : Remettre && make -j$(nproc) \
 
 COPY ./ /social-network-microservices
 RUN cd /social-network-microservices \
     && mkdir -p build \
     && cd build \
     && cmake -DCMAKE_BUILD_TYPE=Debug .. \
-    && make -j$(nproc) \
+    && make -j4 \
     && make install
+    
+## TODO : Remettre && make -j$(nproc) \
+
 
 FROM ubuntu:16.04
 
