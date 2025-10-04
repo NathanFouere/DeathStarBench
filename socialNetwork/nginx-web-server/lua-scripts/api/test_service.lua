@@ -14,7 +14,7 @@ function _M.PingTestService()
     
     local status
     local err
-    status, err = pcall(client.TestFunction, client)
+    status, val = pcall(client.TestFunction, client)
     
     if not status then
       ngx.status = ngx.HTTP_INTERNAL_SERVER_ERROR
@@ -24,6 +24,9 @@ function _M.PingTestService()
     end
     
     GenericObjectPool:returnConnection(client)
+    ngx.log(ngx.ERR, "Succès dans l'appel au service de test")
+    ngx.header["Content-Type"] = "text/plain; charset=utf-8"
+    ngx.say(val)
     ngx.exit(ngx.HTTP_OK)
 
 

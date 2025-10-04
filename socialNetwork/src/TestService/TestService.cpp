@@ -19,6 +19,7 @@ void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
+  init_logger();
 
     json config_json;
     if (load_config_file("config/service-config.json", &config_json) != 0) {
@@ -36,5 +37,6 @@ int main(int argc, char *argv[]) {
         std::make_shared<TBinaryProtocolFactory>()
     );
 
+    LOG(info) << "Starting the teSt-service server...";
   server.serve();
 }

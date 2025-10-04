@@ -68,6 +68,10 @@
     "addr": "media-service",
     "port": 9090
   },
+  "test-service": {
+    "addr": "media-service",
+    "port": 9090
+  },
   "user-mention-service": {
     "addr": "user-mention-service",
     "port": 9090

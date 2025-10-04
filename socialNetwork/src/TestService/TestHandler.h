@@ -1,6 +1,7 @@
 #ifndef SOCIAL_NETWORK_MICROSERVICES_TESTHANDLER_H
 #define SOCIAL_NETWORK_MICROSERVICES_TESTHANDLER_H
 
+#include <cstdio>
 #include <string>
 #include "../../gen-cpp/TestService.h"
 
@@ -15,6 +16,7 @@ namespace social_network {
     }
 
 	void TestHandler::TestFunction(std::string& _return) {
+	     printf("JE SUIS APPELER \n");
 		_return = "Bonjour";
 	}
 }
