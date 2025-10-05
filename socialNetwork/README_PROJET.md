@@ -63,7 +63,9 @@ Les fichier .thrift sont des fichier d'IDL (Interface Definition Language) qui d
 * les exceptions
 * les services RPC
 
-ces fichier créé le code cpp qu'on peut voir dans "gen-cpp".
+Pour générer le code cpp (qu'in peut déjà voir dan gen-cpp) on lance la commande `thrift --gen cpp social_network.thrift`. Ici ça génera le code C++ (utilisé coté serveur) sans problême.
+
+Pour ce qui est des clients ils sont écris en lua. On génere leur code avec `thrift --gen lua social_network.thrift`. Ici je ne sais pas si c'est une différence de version (j'ai essayer avec thrift 12-13-14 et 18). Mais on doit retoucher au fichier générer. Prenez inspiration sur ceux qui existait déjà. Les erreurs que vous verrait potentiellement indique juste qu'ils faut redéclarer des variables et retourner le module à la fin des fichiers généré. C'est peut être pas très clair comme ça mais en regardant le code généré auparavant ça se fait facilement.
 
 ## Jaeger 
 
