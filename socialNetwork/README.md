@@ -1,158 +1,109 @@
-# Social Network Microservices
+## Emscripten
 
-A social network with unidirectional follow relationships, implemented with loosely-coupled microservices, communicating with each other via Thrift RPCs.
+Emscripten est un compilateur source à source open source permettant de compiler du bitcode LLVM en asm.js, qui peut être exécuté par les navigateurs web.
 
-## Application Structure
+Le bytecode LLVM étant généré à partir de programmes écris en C ou C++, par extension Emscripten permet donc de compiler un programme C ou C++ en javascript et en WebAssembly
 
-![Social Network Architecture](figures/socialNet_arch.png)
+Emcc utilise Clang et LLVM pour être compilé en WebAssembly. Il crééer également du javascript qui fournit une API de support au code compilé en Web Assembly. Ce Javascript peut être exécuté par NodeJs ou depuis un fichier un html dans un navigateur.
 
-Supported actions:
+### Exemple 
 
-* Create text post (optional media: image, video, shortened URL, user tag)
-* Read post
-* Read entire user timeline
-* Receive recommendations on which users to follow
-* Search database for user or post
-* Register/Login using user credentials
-* Follow/Unfollow user
+Pour afficher hello world en C on on aura le code suivant :
 
-## Pre-requirements
+```c
+// test.C
+#include <stdio.h>
 
-* Docker
-* Docker-compose
-* Python 3.5+ (with asyncio and aiohttp)
-* libssl-dev (apt-get install libssl-dev)
-* libz-dev (apt-get install libz-dev)
-* luarocks (apt-get install luarocks)
-* luasocket (luarocks install luasocket)
+int main() {
+markdown
+    printf("Hello World \n");
 
-## Running the social network application
-
-### Before you start
-
-* Install Docker and Docker Compose.
-* Make sure the following ports are available: port `8080` for Nginx frontend, `8081` for media frontend and `16686` for Jaeger.
-
-### Start docker containers
-
-#### Start docker containers on single machine with `docker-compose`
-
-Start docker containers by running `docker-compose up -d`. All images will be
-pulled from Docker Hub.
-
-#### Start docker containers on a machine cluster with `docker swarm`
-
-Before starting the containers, make sure:
-1. You are on the master node of the docker swarm nodes.
-2. You have cloned the DeathStarBench repository in the same location on all swarm nodes.
-
-```bash
-docker stack deploy --compose-file=docker-compose-swarm.yml <service-name>
+    return 0;
+}
 ```
 
-### Register users and construct social graphs
+En lançant la commande `emcc test.c ` on obtiendra deux fichiers :
+1. a.out.js
+2. a.out.wasm
 
-Register users and construct social graph by running
-`python3 scripts/init_social_graph.py --graph=<socfb-Reed98, ego-twitter, or soc-twitter-follows-mun>`. It will initialize a social graph from a small social network [Reed98 Facebook Networks](http://networkrepository.com/socfb-Reed98.php), a medium social network [Ego Twitter](https://snap.stanford.edu/data/ego-Twitter.html), or a large social network [TWITTER-FOLLOWS-MUN](https://networkrepository.com/soc-twitter-follows-mun.php). If your setup is not local, you can specify the IP and port of the nginx through `--ip` and `--port` flags, respectively.
+Le premier est un fichier javascript classique, le second est en WebAssembly.
 
-### Running HTTP workload generator
+On peut le code généré avec la commande `node a.out.js`. Ce code js servira d'interface avec le code web assembly produit.
 
-#### Make
+## Connexion entre code C/C++ et Js
 
-It is necessary to build the workload generator tool. Thus, please assert that:
-1. Your repository was cloned using `--recurse-submodules` or you pulled the submodules after the clone using `git submodule update --init --recursive`
-2. You have the "luajit", "luasocket", "libssl-dev" and "make" packages installed.
-3. You are not running inside arm 
+Emscripten permet de faire communiquer du code javascript et C/C++. On peut:
+* Appeler des fonctions C déjà compilé directement depuis du Js
+* Appeler des classes C++ depuis javascript
+* Appeler des fonctions javascript depuis du C et du C++
 
-With the dependencies fulfilled, you can run: 
 
-```bash
-# There are two wrk2 folders: one in the root of the repository and one inside the socialNetwork folder. This is the first one.
-cd ../wrk2
-# Compile
-make
-```
+## CMakeList
 
-And then go back to the socialNetwork folder to run the wrk2 properly for the system.
-```bash
-# Back to socialNetwork, in the root folder.
-cd ../socialNetwork
-```
+CMake est un outil permettant de gérer la compilation d'un projet. Dans le modèle classique de compilation on a :
 
-#### Compose posts
+![Compilation simple](compilation_simple.png)
 
-```bash
-../wrk2/wrk -D exp -t <num-threads> -c <num-conns> -d <duration> -L -s ./wrk2/scripts/social-network/compose-post.lua http://<nginx-ip>:8080/wrk2-api/post/compose -R <reqs-per-sec>
-```
+Les fichier source peuvent être des fichier C, C++, ou autre. Ceux-ci seront traités par le script de compilation qui appelera le compilateur pour créer l'exécutable final.
 
-Example:
-```bash
-../wrk2/wrk -D exp -t 12 -c 400 -d 300 -L -s ./wrk2/scripts/social-network/compose-post.lua http://10.109.126.103:8080/wrk2-api/post/compose -R 10
-```
+Le script de compilation peut avoir plusieurs formes suivant le projet et l'éditeur utilisé. En l'occurence ici un Makefile
 
-#### Read home timelines
+Ce modèle à des limites car plusieurs personnes, avec plusieurs configurations, souhaiterons compiler avec différents outils.
 
-```bash
-../wrk2/wrk -D exp -t <num-threads> -c <num-conns> -d <duration> -L -s ./wrk2/scripts/social-network/read-home-timeline.lua http://localhost:8080/wrk2-api/home-timeline/read -R <reqs-per-sec>
-```
+Cmake (grâce aux CMakeList) résoud cette problématique en créant les scripts de compilation à l'aide d'un fichier de configuration générique. On à ainsi ce nouveau modèle de compilation:
 
-#### Read user timelines
+![Compilation cmake](compilation_cmake.png)
 
-```bash
-../wrk2/wrk -D exp -t <num-threads> -c <num-conns> -d <duration> -L -s ./wrk2/scripts/social-network/read-user-timeline.lua http://localhost:8080/wrk2-api/user-timeline/read -R <reqs-per-sec>
-```
+Cette fois, Cmake grâce au fichier CMakeList.txt, va produire le script de compilation permettant la création de l'exécutable. Le fichier CMakeLists.txt est indépedant de la platefroem. Il décrit comment ocmpiler le projet à l'aide d'informations comme :  le langage utilisé, les fichiers à compiler, les dépendances. Ainsi CMake va pouvoir produire le script de compilation adéquat pour votre machine et votre projet. 
 
-#### View Jaeger traces
-View Jaeger traces by accessing `http://localhost:16686`
+## Thrift 
 
-Example of a Jaeger trace for a compose post request:
+Les fichier .thrift sont des fichier d'IDL (Interface Definition Language) qui décrivent: 
+* les types et structures échangés
+* les exceptions
+* les services RPC
 
-![jaeger_example](figures/socialNet_jaeger.png)
+Pour générer le code cpp (qu'in peut déjà voir dan gen-cpp) on lance la commande `thrift --gen cpp social_network.thrift`. Ici ça génera le code C++ (utilisé coté serveur) sans problême.
 
-#### Use Front End
+Pour ce qui est des clients ils sont écris en lua. On génere leur code avec `thrift --gen lua social_network.thrift`. Ici je ne sais pas si c'est une différence de version (j'ai essayer avec thrift 12-13-14 et 18). Mais on doit retoucher au fichier générer. Prenez inspiration sur ceux qui existait déjà. Les erreurs que vous verrait potentiellement indique juste qu'ils faut redéclarer des variables et retourner le module à la fin des fichiers généré. C'est peut être pas très clair comme ça mais en regardant le code généré auparavant ça se fait facilement.
 
-After starting all containers using `docker-compose up -d`, visit `http://localhost:8080` to use the front end.
+## Jaeger 
 
-First you could see the login and signup page:
-![login_page](figures/login.png)
-![signup_page](figures/signup.png)
+Jaeger (https://www.jaegertracing.io/) permet de monitorer et de tracer des micro-services.
 
-In order to load default users into database, visit `http://localhost:8080/main.html` once. Then click compose to post new contents.
+## Sources et documentation transmise par le professeur
 
-After composing a few posts, you could see your own posts in user timeline page. Click follow button on the right side to follow defualt users:
-![user_timeline_page](figures/user_timeline.png)
+- [Grosse liste d’applis portées avec Emscripten](https://github.com/emscripten-core/emscripten/wiki/Porting-Examples-and-Demos)
+- The browser is the computer (présentation @ WASM IO)
+    - [Vidéo](https://www.youtube.com/watch?v=T5cT3U2afC0)
+    - [Slides](https://speakerdeck.com/angelmmiguel/o?slide=2)
+- Emscripten
+    - [Networking](https://emscripten.org/docs/porting/networking.html)
+- [WasmLinux (démo)](https://wasmlinux-demo.pages.dev/)
+- [Fledger — cross-platform network programming in WASM libc (EPFL C4DT)](https://c4dt.epfl.ch/article/cross-platform-network-programming-in-wasm-libc/)
+- Container to WASM (utilise VM, hors scope mais culture générale)
+    - [container2wasm](https://github.com/container2wasm/container2wasm)
+- [Tokio with WASM (Rust)](https://github.com/cunarist/tokio-with-wasm)
+- [WASM it (Rust)](https://azriel.im/wasm_it/)
+- PgLite — Postgres dans le navigateur
+    - [Site](https://pglite.dev/)
+- WebAssembly sur architectures exotiques
+    - [Note](https://anil.recoil.org/notes/wasm-on-exotic-targets)
+- Postgres WASM (autre Postgres dans le navigateur)
+    - [Article Supabase](https://supabase.com/blog/postgres-wasm)
+- Compiler du C vers WebAssembly sans Emscripten
+    - [Article](https://surma.dev/things/c-to-webassembly/)
+- 
 
-To see your own posts in home timeline page, click the username and profile button:
-![home_timeline_page](figures/home_timeline.png)
 
-Posts could be mixed with text, user mention and image.
+## Application Social Network
 
-Click the contact button to follow/unfollow other users; follower/followee list would be shown below in form of user-id:
-![follow_page](figures/follow.png)
+![Social Network Architecture](../oldSocialNetwork/figures/socialNet_arch.png)
 
-## Enable TLS
 
-If you are using `docker-compose`, start docker containers by running `docker-compose -f docker-compose-tls.yml up -d` to enable TLS.
-
-Since the `depends_on` option is ignored when deploying a stack in swarm mode with a version 3 Compose file, you
-must turn on TLS manually by modifing `config/mongod.conf`, `config/redis.conf`, `config/service-config.json` and
-`nginx-web-server/conf/nginx.conf` to enable TLS with `docker swarm`.
-
-## Enable Redis Sharding
-
-start docker containers by running `docker-compose -f docker-compose-sharding.yml up -d` to enable cache and DB sharding. Currently only Redis sharding is available.
-
-## Development Status
-
-This application is still actively being developed, so keep an eye on the repo to stay up-to-date with recent changes.
-
-### Planned updates
-
-* Upgraded recommender
-* Upgraded search engine
-* MongoDB and Memcached sharding
-
-## Questions and contact
-
-You are welcome to submit a pull request if you find a bug or have extended the application in an interesting way. For any questions please contact us at: <microservices-bench-L@list.cornell.edu>
-
+## Sources
+* https://fr.wikipedia.org/wiki/Emscripten
+* https://emscripten.org/docs/introducing_emscripten/about_emscripten.html
+* https://fr.wikipedia.org/wiki/Apache_Thrift
+* https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html
+* https://alexandre-laurent.developpez.com/tutoriels/cmake/
