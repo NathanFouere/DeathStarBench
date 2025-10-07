@@ -42,7 +42,7 @@ Emscripten permet de faire communiquer du code javascript et C/C++. On peut:
 
 CMake est un outil permettant de gérer la compilation d'un projet. Dans le modèle classique de compilation on a :
 
-![Compilation simple](compilation_simple.png)
+![Compilation simple](https://alexandre-laurent.developpez.com/tutoriels/cmake/images/compilation_simple.png)
 
 Les fichier source peuvent être des fichier C, C++, ou autre. Ceux-ci seront traités par le script de compilation qui appelera le compilateur pour créer l'exécutable final.
 
@@ -52,7 +52,7 @@ Ce modèle à des limites car plusieurs personnes, avec plusieurs configurations
 
 Cmake (grâce aux CMakeList) résoud cette problématique en créant les scripts de compilation à l'aide d'un fichier de configuration générique. On à ainsi ce nouveau modèle de compilation:
 
-![Compilation cmake](compilation_cmake.png)
+![Compilation cmake](https://alexandre-laurent.developpez.com/tutoriels/cmake/images/compilation_cmake.png)
 
 Cette fois, Cmake grâce au fichier CMakeList.txt, va produire le script de compilation permettant la création de l'exécutable. Le fichier CMakeLists.txt est indépedant de la platefroem. Il décrit comment ocmpiler le projet à l'aide d'informations comme :  le langage utilisé, les fichiers à compiler, les dépendances. Ainsi CMake va pouvoir produire le script de compilation adéquat pour votre machine et votre projet. 
 

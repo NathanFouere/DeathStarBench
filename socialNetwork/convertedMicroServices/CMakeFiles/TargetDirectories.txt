@@ -1,0 +1,13 @@
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/CMakeFiles/edit_cache.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/CMakeFiles/rebuild_cache.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/CMakeFiles/list_install_components.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/CMakeFiles/install.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/CMakeFiles/install/local.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/CMakeFiles/install/strip.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/UniqueIdService/CMakeFiles/UniqueIdService.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/UniqueIdService/CMakeFiles/edit_cache.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/UniqueIdService/CMakeFiles/rebuild_cache.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/UniqueIdService/CMakeFiles/list_install_components.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/UniqueIdService/CMakeFiles/install.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/UniqueIdService/CMakeFiles/install/local.dir
+/home/nathanf/Documents/Cours/DeathStarBench/socialNetwork/convertedMicroServices/UniqueIdService/CMakeFiles/install/strip.dir

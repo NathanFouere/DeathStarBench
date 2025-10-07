@@ -18,6 +18,7 @@
             emscripten
             cmake
             thrift
+            nodejs_22
           ];
         };
       };
