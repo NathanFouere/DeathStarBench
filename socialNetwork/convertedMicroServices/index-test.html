@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <script>
+    var Module = {
+      onRuntimeInitialized: function() {
+        console.log(Module);
+        var instance = new Module.UniqueIdHandler(0, "test");
+        console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(instance)));
+      }
+    };
+  </script>
+  <script src="convertedMicroServices.js"></script>
+</html>

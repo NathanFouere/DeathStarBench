@@ -18,7 +18,16 @@
             emscripten
             cmake
             thrift
+            boost
+            nodejs_22
           ];
+          
+          shellHook = ''
+              # emscripten utilise du cache 
+              # comme avec nix on authorise pas d'écrire dans le store 
+              # On met le cache dans un répertoire temporaire
+              export EM_CACHE="$TMPDIR/emscripten_cache"
+          '';
         };
       };
     };
