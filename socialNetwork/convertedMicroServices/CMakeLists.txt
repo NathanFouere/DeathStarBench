@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.13)
+project(convertedMicroServices)
 
 add_executable(convertedMicroServices UniqueIdHandler/UniqueIdHandler.cpp)
 
 set_target_properties(convertedMicroServices PROPERTIES
     CXX_STANDARD 17
     OUTPUT_NAME convertedMicroServices
+    SUFFIX ".cjs"
 )
 
 target_link_libraries(
@@ -13,5 +15,7 @@ target_link_libraries(
 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
-    set_target_properties(convertedMicroServices PROPERTIES LINK_FLAGS "-lembind")
+    set_target_properties(convertedMicroServices PROPERTIES
+        LINK_FLAGS "--bind -sALLOW_MEMORY_GROWTH=1"
+    )
 endif()
