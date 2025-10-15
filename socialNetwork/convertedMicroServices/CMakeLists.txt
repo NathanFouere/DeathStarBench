@@ -6,13 +6,11 @@ add_executable(convertedMicroServices UniqueIdHandler/UniqueIdHandler.cpp)
 set_target_properties(convertedMicroServices PROPERTIES
     CXX_STANDARD 17
     OUTPUT_NAME convertedMicroServices
-    SUFFIX ".cjs"
 )
 
 target_link_libraries(
     convertedMicroServices
 )
-
 
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     set_target_properties(convertedMicroServices PROPERTIES
