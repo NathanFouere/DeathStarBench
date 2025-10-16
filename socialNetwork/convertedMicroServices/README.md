@@ -198,7 +198,7 @@ Créez un fichier HTML (`index.html`) :
         Module.onRuntimeInitialized = () => {
             console.log('Module WebAssembly chargé !');
             document.getElementById('output').innerHTML = '<p style="color: green;">✓ Module WebAssembly chargé et prêt !</p>';
-            
+
             document.getElementById('testBtn').addEventListener('click', () => {
                 const testService = new Module.TestService();
                 const result = testService.TestFunction();
@@ -379,9 +379,15 @@ nix --extra-experimental-features 'nix-command flakes' develop -c emmake make
 nix --extra-experimental-features 'nix-command flakes' develop -c node -e "const m = require('./convertedMicroServices.js'); m.onRuntimeInitialized = () => { const s = new m.TestService(); console.log('Résultat:', s.TestFunction()); s.delete(); process.exit(0); };"
 ```
 
+## Liens utiles
+
+* Bind.h : https://emscripten.org/docs/api_reference/bind.h.html
+* Embind: https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html
+
+
 ## Auteur et Licence
 
-Projet : DeathStarBench - Social Network Microservices  
+Projet : DeathStarBench - Social Network Microservices
 Date : Octobre 2025
 
 ---

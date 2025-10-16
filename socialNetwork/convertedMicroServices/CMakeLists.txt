@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.13)
 project(convertedMicroServices)
 
-add_executable(convertedMicroServices UniqueIdHandler/UniqueIdHandler.cpp)
+add_executable(
+    convertedMicroServices
+    UniqueIdHandler/UniqueIdHandler.cpp
+    MediaHandler/Media.cpp
+    MediaHandler/MediaHandler.cpp
+)
 
 set_target_properties(convertedMicroServices PROPERTIES
     CXX_STANDARD 17
