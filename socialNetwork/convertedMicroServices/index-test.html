@@ -13,15 +13,29 @@
         console.log('Module chargé:', Module);
 
         // Créer une instance avec un machine_id
-        var handler = new Module.UniqueIdHandler("abc");
+        var uniqueIdHandler = new Module.UniqueIdHandler("abc");
 
         // Générer un ID
-        var id = handler.ComposeUniqueId(1, Module.PostType.POST);
+        var id = uniqueIdHandler.ComposeUniqueId(1, Module.PostType.POST);
 
         console.log('ID généré:', id);
 
         // Afficher dans la page
         document.getElementById('output').innerHTML = '<h2>ID généré: ' + id + '</h2>';
+
+        var mediaHandler = new Module.MediaHandler();
+        testStringList = new Module.StringList();
+        testStringList.push_back("testaa");
+
+        testIntList = new Module.IntList();
+        testIntList.push_back(1);
+
+        const testStringMapMAp = new Module.StringStringMap();
+        testStringMapMAp.set("testaa", "testaa");
+        var mediaList = mediaHandler.ComposeMedia(1, testStringList, testIntList, testStringMapMAp);
+        console.log(mediaList)
+        console.log(mediaList.get(0).media_type)
+        console.log(mediaList.get(0).media_id)
       }
     };
   </script>
